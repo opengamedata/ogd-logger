@@ -7,7 +7,8 @@
 // send json package to flask app
 function SendToMonitor($request, $data_array)
 {
-    include('config.php');
+    global $monitorURL, $monitorTimeout;
+    global $loggerversion;
 
     // 1. Set general options, that will stay the same for all events in the package.
     $ch = curl_init('https://'.$monitorURL.'/log/event');
@@ -32,7 +33,6 @@ function SendToMonitor($request, $data_array)
         'Content-Length: ' . strlen($jsonPackage)
     );
     $response = curl_exec($ch);
-
     // check for cURL errors
     if (curl_errno($ch)) {
         error_log( 'cURL error when attempting to communicate with Monitor API: ' . curl_error($ch) );
@@ -42,6 +42,7 @@ function SendToMonitor($request, $data_array)
         // syslog(LOG_NOTICE, 'Response from Monitor API: ' . $response );
     // }
 
+    // 3. Clean up 
     // close cURL session
     curl_close($ch);
     // syslog(LOG_NOTICE, "Sent data to monitor, timedelta:".($end_time_milliseconds - $start_time_milliseconds));
