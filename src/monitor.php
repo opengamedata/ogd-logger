@@ -8,7 +8,7 @@
 function SendToMonitor($request, $data_array)
 {
     global $monitorURL, $monitorTimeout;
-    global $loggerversion;
+    global $loggerVersion;
 
     // 1. Set general options, that will stay the same for all events in the package.
     $ch = curl_init('https://'.$monitorURL.'/log/event');
@@ -27,7 +27,7 @@ function SendToMonitor($request, $data_array)
     // syslog(LOG_NOTICE, "Sending data to monitor, beforeTime:".$start_time_milliseconds);
     // error_log("Repeat message with error_log: Sending data to monitor, beforeTime:".$start_time_milliseconds);
     $jsonPackage = combineParamsAndBody($request, $data_array);
-    $jsonPackage["ogd_logger_version"] = $loggerversion;
+    $jsonPackage["ogd_logger_version"] = $loggerVersion;
     $headers = array(
         'Content-Type: application/json',
         'Content-Length: ' . strlen($jsonPackage)

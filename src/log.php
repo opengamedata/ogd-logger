@@ -7,7 +7,7 @@ include('parser.php');
 include('query_generator.php');
 include('monitor.php');
 
-$RESPONSE_BASE = "ogd-logger ".($loggerversion ?? "")." ";
+$RESPONSE_BASE = "ogd-logger ".($loggerVersion ?? "")." ";
 
 # 1. Figure out what the input schema looks like, defaulting to full OGD schema.
 $APP_ID = $_REQUEST["app_id"] ?? "NO APP ID";
