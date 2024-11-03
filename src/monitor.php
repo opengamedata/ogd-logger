@@ -5,27 +5,34 @@
 
 // connect to flask app with flask api url
 // send json package to flask app
-function sendToMonitor($jsonPackage)
+function SendToMonitor($request, $data_array)
 {
-    include('config.php');
+    global $monitorURL, $monitorTimeout;
+    global $loggerVersion;
 
-    $jsonPackage["ogd_logger_version"] = $loggerversion;
+    // 1. Set general options, that will stay the same for all events in the package.
     $ch = curl_init('https://'.$monitorURL.'/log/event');
-    $headers = array(
-        'Content-Type: application/json',
-        'Content-Length: ' . strlen($jsonPackage)
-    );
     curl_setopt($ch, CURLOPT_PORT, 443);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonPackage);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 50); // DEPLOYMENT CHANGE
     curl_setopt($ch, CURLOPT_TIMEOUT_MS, $monitorTimeout);
-    // syslog(LOG_NOTICE, 'Sending packet to monitor API at '.$monitorURL.' : ' . $jsonPackage );
-    $response = curl_exec($ch);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
+    // 2. Perform forwarding loop - if we decide to split here. For now, just foward the whole damn thing.
+    // syslog(LOG_NOTICE, 'Sending packets to monitor API at '.$monitorURL.' : ' . $jsonPackage );
+    $start_time_milliseconds = round(microtime(true) * 1000);
+    // syslog(LOG_NOTICE, "Sending data to monitor, beforeTime:".$start_time_milliseconds);
+    // error_log("Repeat message with error_log: Sending data to monitor, beforeTime:".$start_time_milliseconds);
+    $jsonPackage = combineParamsAndBody($request, $data_array);
+    $jsonPackage["ogd_logger_version"] = $loggerVersion;
+    $headers = array(
+        'Content-Type: application/json',
+        'Content-Length: ' . strlen($jsonPackage)
+    );
+    $response = curl_exec($ch);
     // check for cURL errors
     if (curl_errno($ch)) {
         error_log( 'cURL error when attempting to communicate with Monitor API: ' . curl_error($ch) );
@@ -35,8 +42,11 @@ function sendToMonitor($jsonPackage)
         // syslog(LOG_NOTICE, 'Response from Monitor API: ' . $response );
     // }
 
+    // 3. Clean up 
     // close cURL session
     curl_close($ch);
+    // syslog(LOG_NOTICE, "Sent data to monitor, timedelta:".($end_time_milliseconds - $start_time_milliseconds));
+    // error_log("Repeat message with error_log: Sent data to monitor, timedelta:".($end_time_milliseconds - $start_time_milliseconds));
 }
 
 // given <parameter array from $_REQUEST> AND <body object from $data>
