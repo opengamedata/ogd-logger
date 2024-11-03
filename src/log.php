@@ -34,7 +34,7 @@ if (count($data) > 0) {
   }
   # 5. Send event to flask monitor after sending to db
   if ($monitorEnabled) {
-    SendToMonitor($_REQUEST, $data);
+    SendToMonitor($_POST, $data);
     $end_time_milliseconds = round(microtime(true) * 1000);
     }
 } else {
