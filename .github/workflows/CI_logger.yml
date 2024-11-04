@@ -72,3 +72,8 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         path: ./*.log
+
+  testbed_log_remote:
+    name: log.php Testbed
+    needs: ci_deploy
+    uses: ./.github/workflows/TEST_log_remote.yml
