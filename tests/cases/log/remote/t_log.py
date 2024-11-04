@@ -13,6 +13,7 @@ from tests.config.t_config import settings
 
 class t_log_remote(TestCase):
     DEFAULT_ADDRESS = "127.0.0.1:5000"
+    DEFAULT_BRANCH = "UNKNOWN BRANCH"
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -38,6 +39,7 @@ class t_log_remote(TestCase):
             "Sec-Fetch-Mode": "cors",
             "Sec-Fetch-Site": "cross-site"
         }
+        cls.branch = cls.testing_config.NonStandardElements.get('APP_BRANCH', t_log_remote.DEFAULT_BRANCH)
 
         _level = logging.DEBUG if cls.testing_config.Verbose else logging.INFO
         Logger.InitializeLogger(level=_level, use_logfile=False)
