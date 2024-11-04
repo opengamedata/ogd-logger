@@ -10,7 +10,7 @@ on:
     - '.github/actions/test_config/**'
     - 'tests/cases/log/remote/**'
     - 'tests/config/**'
-    - 'tests/requirements.txt'
+    - 'requirements.txt'
 
 env:
   DEPLOY_URL:  ${{ vars.OGD_STAGING_HOST }}/${{ github.event.repository.name }}/${{ github.ref_name }}
