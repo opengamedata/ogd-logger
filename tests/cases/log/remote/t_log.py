@@ -64,13 +64,13 @@ class t_log_remote(TestCase):
             "event_data"           : json.dumps({
                 "text_string" : "This is a test event.",
                 "node_id"     : "test.event"
-            }),
+            }).replace('"', '\\\\"'),
             "game_state" : json.dumps({
                 "level" : 1
-            }),
+            }).replace('"', '\\\\"'),
             "user_data" : json.dumps({
                 "account_rank" : "beginner"
-            })
+            }).replace('"', '\\\\"')
         }]
         _data = { "data": b64encode(json.dumps(_json).encode()) }
         try:
@@ -96,13 +96,13 @@ class t_log_remote(TestCase):
                 "event_data"           : json.dumps({
                     "text_string" : "This is a test event.",
                     "node_id"     : "test.event"
-                }),
+                }).replace('"', '\\\\"'),
                 "game_state" : json.dumps({
                     "level" : 1
-                }),
+                }).replace('"', '\\\\"'),
                 "user_data" : json.dumps({
                     "account_rank" : "beginner"
-                })
+                }).replace('"', '\\\\"')
             },
             {
                 "event_name"           : "other_test_event",
@@ -112,13 +112,13 @@ class t_log_remote(TestCase):
                 "event_data"           : json.dumps({
                     "text_string" : "This is another test event.",
                     "node_id"     : "test.event.2"
-                }),
+                }).replace('"', '\\\\"'),
                 "game_state" : json.dumps({
                     "level" : 1
-                }),
+                }).replace('"', '\\\\"'),
                 "user_data" : json.dumps({
                     "account_rank" : "beginner"
-                })
+                }).replace('"', '\\\\"')
             }
         ]
         _data = { "data": b64encode(json.dumps(_json).encode()) }
