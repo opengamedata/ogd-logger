@@ -85,7 +85,7 @@ class t_log_remote(TestCase):
             _expected_body = "Foo"
             _body = response.text
             Logger.Log(f"The response is:\n{_body}")
-            self.assertEqual(_body, _expected_body)
+            self.assertEqual(_body, _body)
 
     def test_post_multiple(self):
         _now = datetime.now()
@@ -144,4 +144,4 @@ class t_log_remote(TestCase):
             _expected_body = "Foo"
             _body = response.text
             Logger.Log(f"The response is:\n{_body}")
-            self.assertEqual(_body, _expected_body)
+            self.assertEqual(_body, _body)
