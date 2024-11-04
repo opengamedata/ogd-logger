@@ -37,6 +37,7 @@ jobs:
       with:
           verbose_output: "True"
           remote_url: ${{ env.DEPLOY_URL }}
+          app_branch: ${{ github.ref }}
 
   # 2. Build & configure remote environments
 

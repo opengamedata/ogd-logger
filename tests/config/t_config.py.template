@@ -4,5 +4,6 @@ settings = {
         "LOG":True,
         "REGISTER":True,
     },
-    "REMOTE_ADDRESS" : "address_placeholder"
+    "REMOTE_ADDRESS" : "address_placeholder",
+    "APP_BRANCH" : "branch_placeholder"
 }

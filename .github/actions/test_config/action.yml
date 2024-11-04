@@ -25,6 +25,11 @@ inputs:
     description: "Local path to test config folder"
     required: false
     default: 'tests/config'
+  app_branch:
+    description: "The name to use for app_branch in the test events"
+    required: false
+    default: 'main'
+
 runs:
   using: "composite"
   steps:
@@ -32,14 +37,17 @@ runs:
       run: cp ${{ inputs.config_path }}/t_config.py.template ${{ inputs.config_path }}/t_config.py 
       shell: bash
     - name: Set Output Verbosity
-      run: sed -i 's@"VERBOSE"\s*:\s*False@"VERBOSE":${{ inputs.verbose_output }}@g'         ${{ inputs.config_path }}/t_config.py
+      run: sed -i 's@"VERBOSE"\s*:\s*False@"VERBOSE":${{ inputs.verbose_output }}@g' ${{ inputs.config_path }}/t_config.py
       shell: bash
     - name: Set log.php test to run or not
-      run: sed -i 's@"LOG"\s*:\s*True@"LOG":${{ inputs.with_log }}@g'              ${{ inputs.config_path }}/t_config.py
+      run: sed -i 's@"LOG"\s*:\s*True@"LOG":${{ inputs.with_log }}@g'                ${{ inputs.config_path }}/t_config.py
       shell: bash
     - name: Set register.php test to run or not
-      run: sed -i 's@"REGISTER"\s*:\s*True@"REGISTER":${{ inputs.with_register }}@g'              ${{ inputs.config_path }}/t_config.py
+      run: sed -i 's@"REGISTER"\s*:\s*True@"REGISTER":${{ inputs.with_register }}@g' ${{ inputs.config_path }}/t_config.py
       shell: bash
     - name: Set Remote URL
-      run: sed -i 's@"address_placeholder"@"${{ inputs.remote_url }}"@g'         ${{ inputs.config_path }}/t_config.py
+      run: sed -i 's@"address_placeholder"@"${{ inputs.remote_url }}"@g'             ${{ inputs.config_path }}/t_config.py
+      shell: bash
+    - name: Set App Branch
+      run: sed -i 's@"branch_placeholder"@"${{ inputs.app_branch }}"@g'              ${{ inputs.config_path }}/t_config.py
       shell: bash
