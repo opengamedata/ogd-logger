@@ -40,15 +40,8 @@ class t_log_remote(TestCase):
             "Sec-Fetch-Mode": "cors",
             "Sec-Fetch-Site": "cross-site"
         }
-        cls.branch = cls.testing_config.NonStandardElements.get('APP_BRANCH', t_log_remote.DEFAULT_BRANCH)
-
-        _level = logging.DEBUG if cls.testing_config.Verbose else logging.INFO
-        Logger.InitializeLogger(level=_level, use_logfile=False)
-
-    def test_post_single(self):
         _now = datetime.now()
-        _url = f"{self.base_url}/log.php"
-        _params = {
+        cls.params = {
             "app_id": "TESTAPP",
             "log_version": 1,
             "app_version": "1.2.3",
@@ -56,6 +49,13 @@ class t_log_remote(TestCase):
             "app_branch": "main",
             "user_id": "TestBed"
         }
+        cls.branch = cls.testing_config.NonStandardElements.get('APP_BRANCH', t_log_remote.DEFAULT_BRANCH)
+
+        _level = logging.DEBUG if cls.testing_config.Verbose else logging.INFO
+        Logger.InitializeLogger(level=_level, use_logfile=False)
+
+    def test_post_single(self):
+        _url = f"{self.base_url}/log.php"
         _json = [{
             "event_name"           : "test_event",
             "event_sequence_index" : 1,
@@ -74,7 +74,7 @@ class t_log_remote(TestCase):
         }]
         _data = { "data": b64encode(json.dumps(_json).encode()) }
         try:
-            response = requests.post(url=_url, headers=self.headers, params=_params, data=_data, timeout=10)
+            response = requests.post(url=_url, headers=self.headers, params=self.params, data=_data, timeout=10)
         except Exception as err:
             self.fail(str(err))
         else:
@@ -86,20 +86,11 @@ class t_log_remote(TestCase):
             self.assertEqual(_body, _body)
 
     def test_post_multiple(self):
-        _now = datetime.now()
         _url = f"{self.base_url}/log.php"
-        _params = {
-            "app_id": "TESTAPP",
-            "log_version": 1,
-            "app_version": "1.2.3",
-            "session_id": f"{_now.year % 100:02}{_now.month:02}{_now.day:02}{_now.hour:02}{_now.minute:02}{_now.second:02}12345",
-            "app_branch": "main",
-            "user_id": "TestBed"
-        }
         _json = [
             {
                 "event_name"           : "test_event",
-                "event_sequence_index" : 1,
+                "event_sequence_index" : 2,
                 "client_time"          : datetime.now().isoformat(),
                 "client_offset"        : "-06:00:00",
                 "event_data"           : json.dumps({
@@ -115,7 +106,7 @@ class t_log_remote(TestCase):
             },
             {
                 "event_name"           : "other_test_event",
-                "event_sequence_index" : 2,
+                "event_sequence_index" : 3,
                 "client_time"          : datetime.now().isoformat(),
                 "client_offset"        : "-06:00:00",
                 "event_data"           : json.dumps({
@@ -132,7 +123,7 @@ class t_log_remote(TestCase):
         ]
         _data = { "data": b64encode(json.dumps(_json).encode()) }
         try:
-            response = requests.post(url=_url, headers=self.headers, params=_params, data=_data, timeout=10)
+            response = requests.post(url=_url, headers=self.headers, params=self.params, data=_data, timeout=10)
         except Exception as err:
             self.fail(str(err))
         else:
