@@ -56,7 +56,7 @@ class t_log_remote(TestCase):
             "app_branch": "main",
             "user_id": "TestBed"
         }
-        _data = [{
+        _json = [{
             "event_name"           : "test_event",
             "event_sequence_index" : 1,
             "client_time"          : datetime.now().isoformat(),
@@ -72,9 +72,9 @@ class t_log_remote(TestCase):
                 "account_rank" : "beginner"
             }
         }]
-        _json = { "data": b64encode(json.dumps(_data).encode()) }
+        _data = { "data": b64encode(json.dumps(_json).encode()) }
         try:
-            response = requests.post(url=_url, headers=self.headers, params=_params, json=_json, timeout=10)
+            response = requests.post(url=_url, headers=self.headers, params=_params, data=_data, timeout=10)
         except Exception as err:
             self.fail(str(err))
         else:
@@ -96,7 +96,7 @@ class t_log_remote(TestCase):
             "app_branch": "main",
             "user_id": "TestBed"
         }
-        _data = [
+        _json = [
             {
                 "event_name"           : "test_event",
                 "event_sequence_index" : 1,
@@ -130,9 +130,9 @@ class t_log_remote(TestCase):
                 }
             }
         ]
-        _json = { "data": b64encode(json.dumps(_data).encode()) }
+        _data = { "data": b64encode(json.dumps(_json).encode()) }
         try:
-            response = requests.post(url=_url, headers=self.headers, params=_params, json=_json, timeout=10)
+            response = requests.post(url=_url, headers=self.headers, params=_params, data=_data, timeout=10)
         except Exception as err:
             self.fail(str(err))
         else:
