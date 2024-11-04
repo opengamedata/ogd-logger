@@ -34,6 +34,7 @@ if (!$conn) {
  * An array of event data bodies, containing event_name, event_data, and similar columns.
  * @var array
  */
+error_log("Raw decoded post was ".base64_decode($_POST["data"]));
 $data = json_decode(base64_decode($_POST["data"]));
 if (!is_array($data)) {
   $d = $data;
