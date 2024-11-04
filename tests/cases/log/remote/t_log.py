@@ -16,6 +16,15 @@ class t_log_remote(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
+        """Set up the t_log_remote testbed class.
+
+        In particular, we set the following class vars:
+        - testing_config : A TestConfigSchema based on the settings in t_config.py
+        - base_url : The base URL endpoint in the config.
+        - headers : The headers to include in our testing requests.
+
+        TODO : remove the https:// bit of the base URL when we start using TestRequest, which will auto-add it for us if not in the config.
+        """
         cls.testing_config = TestConfigSchema.FromDict(name="HelloAPITestConfig", all_elements=settings, logger=None)
         cls.base_url = f"https://{cls.testing_config.NonStandardElements.get('REMOTE_ADDRESS', t_log_remote.DEFAULT_ADDRESS)}"
         cls.headers = {
