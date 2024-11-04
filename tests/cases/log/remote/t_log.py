@@ -135,7 +135,7 @@ class t_log_remote(TestCase):
             ]
         }
         try:
-            response = requests.post(url=_url, headers=self.headers, params=_params, json=_json, timeout=0.1)
+            response = requests.post(url=_url, headers=self.headers, params=_params, json=_json, timeout=10)
         except Exception as err:
             self.fail(str(err))
         else:
