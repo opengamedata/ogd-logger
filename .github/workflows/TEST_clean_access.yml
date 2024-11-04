@@ -1,0 +1,56 @@
+# Workflow to clean out the directory where a deleted branch's files were deployed by CI
+name: OGD Logger - Dead Branch Cleanup Script
+run-name: ${{ format('{0} - {1}', github.workflow, github.event_name == 'delete' && github.event.ref || 'Manual Run') }}
+
+on:
+  workflow_dispatch:
+
+env:
+  DEPLOY_HOST: ${{ vars.OGD_STAGING_HOST }}
+  DEPLOY_PATH:         ${{ vars.WEB_PATH }}/${{ github.event.repository.name }}/${{ github.event.ref }}
+  DEPLOY_URL:  ${{ vars.OGD_STAGING_HOST }}/${{ github.event.repository.name }}/${{ github.event.ref }}
+    
+jobs:
+  clean_test:
+    name: Clean Access Test
+    if: github.event.ref_type == 'branch'
+    runs-on: ubuntu-22.04
+    # concurrency:
+    #   group: ${{ github.repository }}-${{ github.ref }}-${{ github.workflow }}
+    #   cancel-in-progress: false
+    
+    steps:
+
+    # 1. Local checkout & config
+    
+    # 2. Build 
+
+    # 3. Remote config & clean
+    - name: Install OpenConnect
+      run: sudo apt-get -q update && sudo apt-get -q install openconnect
+    - name: Connect to VPN
+      run: echo ${{ secrets.VPN_PASS }} | sudo openconnect --protocol=gp -u ${{ secrets.VPN_USER}} --passwd-on-stdin soe.vpn.wisc.edu &
+
+    - name: Setup Access Key
+      run: |
+        mkdir -p ~/.ssh
+        echo '${{secrets.CLEAN_KEY}}' >> ./key.txt
+        chmod 600 ./key.txt
+
+    - name: See if we can run anything over ssh
+      run: ssh -o StrictHostKeyChecking=no -T -i ./key.txt ${{ secrets.CLEAN_USER }}@${{ env.DEPLOY_HOST }} "pwd"
+
+    - name: See if we can touch a file
+      run: ssh -o StrictHostKeyChecking=no -T -i ./key.txt ${{ secrets.CLEAN_USER }}@${{ env.DEPLOY_HOST }} "touch ./${{ github.repository }}-${{ github.ref }}-${{ github.workflow }}.txt"
+
+    - name: See if we can delete the file we touched
+      run: ssh -o StrictHostKeyChecking=no -T -i ./key.txt ${{ secrets.CLEAN_USER }}@${{ env.DEPLOY_HOST }} "rm ./${{ github.repository }}-${{ github.ref }}-${{ github.workflow }}.txt"
+    
+    - name: Announce cleanup
+      run: echo "Removed branch deploy at ${{ env.DEPLOY_URL }}"
+
+    - name: Upload logs as artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        path: ./*.log
+    
