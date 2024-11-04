@@ -8,7 +8,7 @@ on:
     paths:
     - '.github/workflows/TEST_log_remote.yml'
     - '.github/actions/test_config/**'
-    - 'tests/cases/apis/HelloAPI/remote/**'
+    - 'tests/cases/log/remote/**'
     - 'tests/config/**'
     - 'tests/requirements.txt'
 
