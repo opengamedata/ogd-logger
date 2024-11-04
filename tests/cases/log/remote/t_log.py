@@ -17,7 +17,7 @@ class t_log_remote(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.testing_config = TestConfigSchema.FromDict(name="HelloAPITestConfig", all_elements=settings, logger=None)
-        cls.base_url = cls.testing_config.NonStandardElements.get("REMOTE_ADDRESS", t_log_remote.DEFAULT_ADDRESS)
+        cls.base_url = f"https://{cls.testing_config.NonStandardElements.get('REMOTE_ADDRESS', t_log_remote.DEFAULT_ADDRESS)}"
         cls.headers = {
             "Accept": "*/*",
             "Accept-Language": "en-US,en;q=0.5",
