@@ -2,6 +2,7 @@
 import json
 import logging
 import requests
+from base64 import b64encode
 from datetime import datetime
 from unittest import TestCase
 # import 3rd-party libraries
@@ -55,26 +56,23 @@ class t_log_remote(TestCase):
             "app_branch": "main",
             "user_id": "TestBed"
         }
-        _json = {
-            "data": [
-                {
-                    "event_name"           : "test_event",
-                    "event_sequence_index" : 1,
-                    "client_time"          : datetime.now().isoformat(),
-                    "client_offset"        : "-06:00:00",
-                    "event_data"           : {
-                        "text_string" : "This is a test event.",
-                        "node_id"     : "test.event"
-                    },
-                    "game_state" : {
-                        "level" : 1
-                    },
-                    "user_data" : {
-                        "account_rank" : "beginner"
-                    }
-                }
-            ]
-        }
+        _data = [{
+            "event_name"           : "test_event",
+            "event_sequence_index" : 1,
+            "client_time"          : datetime.now().isoformat(),
+            "client_offset"        : "-06:00:00",
+            "event_data"           : {
+                "text_string" : "This is a test event.",
+                "node_id"     : "test.event"
+            },
+            "game_state" : {
+                "level" : 1
+            },
+            "user_data" : {
+                "account_rank" : "beginner"
+            }
+        }]
+        _json = { "data": b64encode(json.dumps(_data).encode()) }
         try:
             response = requests.post(url=_url, headers=self.headers, params=_params, json=_json, timeout=10)
         except Exception as err:
@@ -98,42 +96,41 @@ class t_log_remote(TestCase):
             "app_branch": "main",
             "user_id": "TestBed"
         }
-        _json = {
-            "data": [
-                {
-                    "event_name"           : "test_event",
-                    "event_sequence_index" : 1,
-                    "client_time"          : datetime.now().isoformat(),
-                    "client_offset"        : "-06:00:00",
-                    "event_data"           : {
-                        "text_string" : "This is a test event.",
-                        "node_id"     : "test.event"
-                    },
-                    "game_state" : {
-                        "level" : 1
-                    },
-                    "user_data" : {
-                        "account_rank" : "beginner"
-                    }
+        _data = [
+            {
+                "event_name"           : "test_event",
+                "event_sequence_index" : 1,
+                "client_time"          : datetime.now().isoformat(),
+                "client_offset"        : "-06:00:00",
+                "event_data"           : {
+                    "text_string" : "This is a test event.",
+                    "node_id"     : "test.event"
                 },
-                {
-                    "event_name"           : "other_test_event",
-                    "event_sequence_index" : 2,
-                    "client_time"          : datetime.now().isoformat(),
-                    "client_offset"        : "-06:00:00",
-                    "event_data"           : {
-                        "text_string" : "This is another test event.",
-                        "node_id"     : "test.event.2"
-                    },
-                    "game_state" : {
-                        "level" : 1
-                    },
-                    "user_data" : {
-                        "account_rank" : "beginner"
-                    }
+                "game_state" : {
+                    "level" : 1
+                },
+                "user_data" : {
+                    "account_rank" : "beginner"
                 }
-            ]
-        }
+            },
+            {
+                "event_name"           : "other_test_event",
+                "event_sequence_index" : 2,
+                "client_time"          : datetime.now().isoformat(),
+                "client_offset"        : "-06:00:00",
+                "event_data"           : {
+                    "text_string" : "This is another test event.",
+                    "node_id"     : "test.event.2"
+                },
+                "game_state" : {
+                    "level" : 1
+                },
+                "user_data" : {
+                    "account_rank" : "beginner"
+                }
+            }
+        ]
+        _json = { "data": b64encode(json.dumps(_data).encode()) }
         try:
             response = requests.post(url=_url, headers=self.headers, params=_params, json=_json, timeout=10)
         except Exception as err:
