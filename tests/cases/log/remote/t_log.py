@@ -61,16 +61,16 @@ class t_log_remote(TestCase):
             "event_sequence_index" : 1,
             "client_time"          : datetime.now().isoformat(),
             "client_offset"        : "-06:00:00",
-            "event_data"           : {
+            "event_data"           : json.dumps({
                 "text_string" : "This is a test event.",
                 "node_id"     : "test.event"
-            },
-            "game_state" : {
+            }),
+            "game_state" : json.dumps({
                 "level" : 1
-            },
-            "user_data" : {
+            }),
+            "user_data" : json.dumps({
                 "account_rank" : "beginner"
-            }
+            })
         }]
         _data = { "data": b64encode(json.dumps(_json).encode()) }
         try:
@@ -102,32 +102,32 @@ class t_log_remote(TestCase):
                 "event_sequence_index" : 1,
                 "client_time"          : datetime.now().isoformat(),
                 "client_offset"        : "-06:00:00",
-                "event_data"           : {
+                "event_data"           : json.dumps({
                     "text_string" : "This is a test event.",
                     "node_id"     : "test.event"
-                },
-                "game_state" : {
+                }),
+                "game_state" : json.dumps({
                     "level" : 1
-                },
-                "user_data" : {
+                }),
+                "user_data" : json.dumps({
                     "account_rank" : "beginner"
-                }
+                })
             },
             {
                 "event_name"           : "other_test_event",
                 "event_sequence_index" : 2,
                 "client_time"          : datetime.now().isoformat(),
                 "client_offset"        : "-06:00:00",
-                "event_data"           : {
+                "event_data"           : json.dumps({
                     "text_string" : "This is another test event.",
                     "node_id"     : "test.event.2"
-                },
-                "game_state" : {
+                }),
+                "game_state" : json.dumps({
                     "level" : 1
-                },
-                "user_data" : {
+                }),
+                "user_data" : json.dumps({
                     "account_rank" : "beginner"
-                }
+                })
             }
         ]
         _data = { "data": b64encode(json.dumps(_json).encode()) }
