@@ -1,2 +1,4 @@
+requests==2.32.*
+# ogd packages
 opengamedata-common==1.2.*
 opengamedata-apis-utils==1.1.*
