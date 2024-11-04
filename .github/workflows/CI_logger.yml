@@ -6,8 +6,7 @@ on:
     paths:
     - '.github/workflows/logger_CI.yml'
     - '.github/actions/**'
-    - '*.php'
-    - 'config.php.template'
+    - 'src/**'
   workflow_dispatch: # Allow manual trigger of this workflow from the Actions tab
 
 env:
