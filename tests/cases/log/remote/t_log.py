@@ -59,7 +59,7 @@ class t_log_remote(TestCase):
         _json = [{
             "event_name"           : "test_event",
             "event_sequence_index" : 1,
-            "client_time"          : datetime.now().isoformat(),
+            "client_time"          : datetime.now().isoformat(timespec="milliseconds"),
             "client_offset"        : "-06:00:00",
             "event_data"           : json.dumps({
                 "text_string" : "This is a test event.",
@@ -91,7 +91,7 @@ class t_log_remote(TestCase):
             {
                 "event_name"           : "test_event",
                 "event_sequence_index" : 2,
-                "client_time"          : datetime.now().isoformat(),
+                "client_time"          : datetime.now().isoformat(timespec="milliseconds"),
                 "client_offset"        : "-06:00:00",
                 "event_data"           : json.dumps({
                     "text_string" : "This is a test event.",
@@ -107,7 +107,7 @@ class t_log_remote(TestCase):
             {
                 "event_name"           : "other_test_event",
                 "event_sequence_index" : 3,
-                "client_time"          : datetime.now().isoformat(),
+                "client_time"          : datetime.now().isoformat(timespec="milliseconds"),
                 "client_offset"        : "-06:00:00",
                 "event_data"           : json.dumps({
                     "text_string" : "This is another test event.",
