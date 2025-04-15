@@ -48,7 +48,11 @@ if (count($data) > 0) {
     $result = mysqli_query($conn, $query);
   }
   catch(mysqli_sql_exception) {
-    $sql_err = "Query for ".$APP_ID." failed with error: ".mysqli_error($conn);
+    $app_version = NULL;
+    if (isset($_REQUEST["app_version"])) {
+      $app_version = filter_var($_REQUEST["app_version"], FILTER_SANITIZE_NUMBER_INT);
+    }
+    $sql_err = "Query for ".$APP_ID." v".$app_version." failed with error: ".mysqli_error($conn);
     error_log($sql_err);
     die("FAIL: ".$sql_err);
   }
