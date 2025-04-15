@@ -4,10 +4,10 @@ run-name: ${{ format('{0} - {1}', github.workflow, github.event_name == 'push' &
 on:
   push:
     paths:
-    - '.github/workflows/logger_CI.yml'
+    - '.github/workflows/CI_logger.yml'
     - '.github/actions/**'
-    - '*.php'
-    - 'config.php.template'
+    - 'src/*.php'
+    - 'src/config.php.template'
   workflow_dispatch: # Allow manual trigger of this workflow from the Actions tab
 
 env:
