@@ -11,9 +11,9 @@ on:
   workflow_dispatch: # Allow manual trigger of this workflow from the Actions tab
 
 env:
-  DEPLOY_HOST: ${{ vars.OGD_STAGING_HOST }}
+  DEPLOY_HOST: ${{ vars.OGD_LOGGER_HOST }}
   DEPLOY_DIR:  ${{ vars.WEB_PATH }}/${{ github.event.repository.name }}/${{ github.ref_name }}
-  DEPLOY_URL:  ${{ vars.OGD_STAGING_HOST }}/${{ github.event.repository.name }}/${{ github.ref_name }}
+  DEPLOY_URL:  ${{ vars.OGD_LOGGER_HOST }}/${{ github.event.repository.name }}/${{ github.ref_name }}
   URL_PATH:    ${{ github.event.repository.name }}/${{ github.ref_name }}
 
 jobs:
