@@ -44,7 +44,14 @@ if (!is_array($data)) {
 # 4. Send the query itself. Log errors if failed.
 if (count($data) > 0) {
   $query = generateQueryString($REQUEST_SCHEMA, $APP_ID, $data, $conn);
-  $result = mysqli_query($conn, $query);
+  try {
+    $result = mysqli_query($conn, $query);
+  }
+  catch(mysqli_sql_exception) {
+    $sql_err = "Query for ".$APP_ID." failed with error: ".mysqli_error($conn);
+    error_log($sql_err);
+    die("FAIL: ".$sql_err);
+  }
   if ($result) {
     if ($monitorEnabled) {
 # 5. Make flask monitor connection after connecting to db
