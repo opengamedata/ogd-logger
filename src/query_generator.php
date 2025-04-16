@@ -1,7 +1,4 @@
 <?php
-  $LOGGER_SCHEMA = "LOGGER";
-  $OGD_SCHEMA    = "OPENGAMEDATA";
-
    function generateQueryString($schema, $app_id, $data, $conn) {
       global $LOGGER_SCHEMA;
       global $OGD_SCHEMA;
